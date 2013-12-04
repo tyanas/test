@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Minimal BubbleTree Demo</title>
+    <script type="text/javascript" src="./lib/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="./lib/jquery.history.js"></script>
+    <script type="text/javascript" src="./lib/raphael.js"></script>
+    <script type="text/javascript" src="./lib/vis4.js"></script>
+    <script type="text/javascript" src="./lib/Tween.js"></script>
+    <script type="text/javascript" src="./build/bubbletree.js"></script>
+    <link rel="stylesheet" type="text/css" href="./build/bubbletree.css" />
+    <script type="text/javascript" src="./styles/cofog.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(function() {
+
+            var data = {
+                label: "Число участников двоек в 2013",
+                amount: 47,
+                children: [{
+                    label: "Актур (Вакулюк)",
+                    amount: 7,
+                    children: [{label:"М", amount: 5}, {label:"Ж", amount: 2}]
+                }, {
+                    label: "Домбровская",
+                    amount: 8,
+                    children: [{label:"М", amount: 4}, {label:"Ж", amount: 4}]
+                }, {
+                    label: "Ирины копуши (Кикоть)",
+                    amount: 13,
+                    children: [{label:"М", amount: 6}, {label:"Ж", amount: 7}]
+                }, {
+                    label: "Поход 15-ти озёр (Савостин)",
+                    amount: 6,
+                    children: [{label:"М", amount: 4}, {label:"Ж", amount: 2}]
+                }, {
+                    label: "Страна советов (Козачек)",
+                    amount: 13,
+                    children: [{label:"М", amount: 7}, {label:"Ж", amount: 6}]
+                }]
+            };
+
+
+            // add colors
+            var numChildren = data.children.length;
+            for (var i=0; i<numChildren ; i++) {
+                // random color for level 1 children
+                data.children[i].color = vis4color.fromHSL(i/numChildren*360, .7, .5).x;
+                for (var j=0; j<data.children[i].length ; j++) {
+                    // children of level 2 will get a similar color of their parent
+                    data.children[i][j].color = vis4color.fromHex(data.children[i].color)
+                        .lightness('*'+(.5+Math.random()*.5)).x;
+                }
+            }
+
+            new BubbleTree({
+                data: data,
+                container: '.bubbletree'
+            });
+
+
+        });
+
+    </script>
+</head>
+<body>
+    <div class="bubbletree-wrapper">
+        <div class="bubbletree"></div>
+    </div>
+</body>
+</html>
